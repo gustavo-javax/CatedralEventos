@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 @Embeddable
 
 public class DadosProfissionais {
-    // ⭐ DADOS DE GUIA
+    // DADOS DE GUIA
     @Column(name = "especializacao_guia", length = 200)
     private String especializacaoGuia;
 
@@ -21,7 +21,7 @@ public class DadosProfissionais {
     @Column(name = "guia_ativo")
     private boolean guiaAtivo = false;
 
-    // ⭐ DADOS DE VENDEDOR
+    // DADOS DE VENDEDOR
     @Column(name = "razao_social", length = 200)
     private String razaoSocial;
 

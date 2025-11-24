@@ -103,7 +103,7 @@ public class Usuario implements UserDetails {
     public DadosProfissionais getDadosProfissionais() { return dadosProfissionais; }
     public void setDadosProfissionais(DadosProfissionais dadosProfissionais) { this.dadosProfissionais = dadosProfissionais; }
 
-    // ⭐ MÉTODOS ÚTEIS
+    // MÉTODOS ÚTEIS
     public boolean isGuia() {
         return perfis.contains(Perfil.GUIA);
     }
