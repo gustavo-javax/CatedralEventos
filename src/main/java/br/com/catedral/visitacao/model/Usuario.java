@@ -51,18 +51,15 @@ public class Usuario implements UserDetails {
     @Column(name = "data_criacao", nullable = false)
     private LocalDateTime dataCriacao = LocalDateTime.now();
 
-    // PERFIS SIMPLES
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "usuario_perfis", joinColumns = @JoinColumn(name = "usuario_id"))
     @Column(name = "perfil")
     private Set<Perfil> perfis = new HashSet<>();
 
-    // DADOS PROFISSIONAIS
     @Embedded
     private DadosProfissionais dadosProfissionais;
 
-    // Construtores
     public Usuario() {}
 
     public Usuario(String nome, String email, String senha) {
@@ -72,7 +69,6 @@ public class Usuario implements UserDetails {
         this.perfis.add(Perfil.CLIENTE); // Default
     }
 
-    // Getters e Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -103,7 +99,6 @@ public class Usuario implements UserDetails {
     public DadosProfissionais getDadosProfissionais() { return dadosProfissionais; }
     public void setDadosProfissionais(DadosProfissionais dadosProfissionais) { this.dadosProfissionais = dadosProfissionais; }
 
-    // MÉTODOS ÚTEIS
     public boolean isGuia() {
         return perfis.contains(Perfil.GUIA);
     }
@@ -116,7 +111,6 @@ public class Usuario implements UserDetails {
         return perfis.contains(Perfil.ADMIN);
     }
 
-    // Spring Security
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return perfis.stream()
