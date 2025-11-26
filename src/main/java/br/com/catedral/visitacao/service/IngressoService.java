@@ -20,6 +20,14 @@ public class IngressoService {
     private final QrCodeService qrCodeService;
     private final EmailService emailService;
 
+    public List<Ingresso> listarCheckinsPorSessao(Long sessaoId) {
+        return ingressoRepository.findBySessaoIdAndStatus(sessaoId, StatusIngresso.UTILIZADO);
+    }
+
+    public Long contarCheckinsPorSessao(Long sessaoId) {
+        return ingressoRepository.countBySessaoIdAndStatusIn(sessaoId, List.of(StatusIngresso.UTILIZADO));
+    }
+
     public IngressoService(IngressoRepository ingressoRepository, QrCodeService qrCodeService, EmailService emailService) {
         this.ingressoRepository = ingressoRepository;
         this.qrCodeService = qrCodeService;
@@ -94,4 +102,18 @@ public class IngressoService {
 
         return qrCode;
     }
+    public Ingresso buscarPorId(Long id) {
+        return ingressoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Ingresso não encontrado"));
+    }
+
+    public void cancelarIngresso(Long id) {
+        Ingresso ingresso = buscarPorId(id);
+        if (ingresso.getStatus() != StatusIngresso.ATIVO) {
+            throw new RuntimeException("Ingresso não pode ser cancelado");
+        }
+        ingresso.setStatus(StatusIngresso.CANCELADO);
+        ingressoRepository.save(ingresso);
+    }
+
 }

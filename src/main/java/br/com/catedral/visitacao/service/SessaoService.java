@@ -1,6 +1,7 @@
 package br.com.catedral.visitacao.service;
 
 import br.com.catedral.visitacao.model.Sessao;
+import br.com.catedral.visitacao.repository.IngressoRepository;
 import br.com.catedral.visitacao.repository.SessaoRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +12,12 @@ import java.util.List;
 public class SessaoService {
 
     private final SessaoRepository sessaoRepository;
+    private final IngressoRepository ingressoRepository;
 
-    public SessaoService(SessaoRepository sessaoRepository) {
+
+    public SessaoService(SessaoRepository sessaoRepository, IngressoRepository ingressoRepository) {
         this.sessaoRepository = sessaoRepository;
+        this.ingressoRepository = ingressoRepository;
     }
 
     public Sessao salvar(Sessao sessao) {
@@ -57,4 +61,9 @@ public class SessaoService {
             return dataHora.isBefore(fimSessao) && fimNovaSessao.isAfter(sessao.getDataHora());
         });
     }
+
+    public Long contarIngressosVendidos(Long sessaoId) {
+        return ingressoRepository.countBySessaoId(sessaoId);
+    }
+
 }

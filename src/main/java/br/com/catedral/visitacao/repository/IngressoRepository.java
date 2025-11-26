@@ -12,6 +12,8 @@ import java.util.Optional;
 
 @Repository
 public interface IngressoRepository extends JpaRepository<Ingresso, Long> {
+
+    Long countBySessaoId(Long sessaoId);
     Optional<Ingresso> findByQrCode(String qrCode);
     List<Ingresso> findByCompradorId(Long compradorId);
     List<Ingresso> findBySessaoId(Long sessaoId);
