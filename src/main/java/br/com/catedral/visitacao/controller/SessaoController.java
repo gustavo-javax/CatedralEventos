@@ -3,6 +3,8 @@ package br.com.catedral.visitacao.controller;
 import br.com.catedral.visitacao.dto.request.SessaoRequest;
 import br.com.catedral.visitacao.dto.response.MensagemResponse;
 import br.com.catedral.visitacao.dto.response.SessaoResponse;
+import br.com.catedral.visitacao.dto.response.EventoResponse;
+import br.com.catedral.visitacao.dto.response.UsuarioResponse;
 import br.com.catedral.visitacao.model.Evento;
 import br.com.catedral.visitacao.model.Sessao;
 import br.com.catedral.visitacao.model.Usuario;
@@ -20,7 +22,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/sessoes")
 @CrossOrigin(origins = "*")
-
 public class SessaoController {
 
     private final SessaoService sessaoService;
@@ -137,6 +138,31 @@ public class SessaoController {
         response.setPreco(sessao.getPreco());
         response.setCapacidade(sessao.getCapacidade());
         response.setAtivo(sessao.isAtivo());
+
+        if (sessao.getEvento() != null) {
+            EventoResponse eventoResponse = new EventoResponse();
+            eventoResponse.setId(sessao.getEvento().getId());
+            eventoResponse.setNome(sessao.getEvento().getNome());
+            eventoResponse.setDescricao(sessao.getEvento().getDescricao());
+            eventoResponse.setTipoEvento(sessao.getEvento().getTipoEvento());
+            eventoResponse.setDuracaoMinutos(sessao.getEvento().getDuracaoMinutos());
+            eventoResponse.setImagemUrl(sessao.getEvento().getImagemUrl());
+            eventoResponse.setAtivo(sessao.getEvento().isAtivo());
+            response.setEvento(eventoResponse);
+        }
+
+        if (sessao.getGuia() != null) {
+            UsuarioResponse guiaResponse = new UsuarioResponse();
+            guiaResponse.setId(sessao.getGuia().getId());
+            guiaResponse.setNome(sessao.getGuia().getNome());
+            guiaResponse.setEmail(sessao.getGuia().getEmail());
+            guiaResponse.setCpf(sessao.getGuia().getCpf());
+            guiaResponse.setCelular(sessao.getGuia().getCelular());
+            guiaResponse.setAtivo(sessao.getGuia().isAtivo());
+            guiaResponse.setDataCriacao(sessao.getGuia().getDataCriacao());
+            guiaResponse.setPerfis(sessao.getGuia().getPerfis());
+            response.setGuia(guiaResponse);
+        }
 
         Long ingressosVendidos = sessaoService.contarIngressosVendidos(sessao.getId());
         response.setVagasDisponiveis(sessao.getCapacidade() - ingressosVendidos.intValue());
