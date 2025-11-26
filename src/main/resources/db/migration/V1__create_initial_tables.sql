@@ -1,12 +1,13 @@
+-- Tabela de usuários
 CREATE TABLE usuario (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    id BIGSERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     senha VARCHAR(255) NOT NULL,
     cpf VARCHAR(11),
     celular VARCHAR(15),
-    ativo BOOLEAN NOT NULL DEFAULT TRUE,
-    data_criacao TIMESTAMP NOT NULL,
+    ativo BOOLEAN DEFAULT true,
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     especializacao_guia VARCHAR(200),
     biografia_guia TEXT,
     avaliacao_guia DECIMAL(3,2),
@@ -17,54 +18,60 @@ CREATE TABLE usuario (
     vendedor_ativo BOOLEAN
 );
 
+-- Tabela de perfis
 CREATE TABLE usuario_perfis (
     usuario_id BIGINT NOT NULL,
     perfil VARCHAR(50) NOT NULL,
+    PRIMARY KEY (usuario_id, perfil),
     FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 );
 
+-- Tabela de eventos
 CREATE TABLE evento (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    id BIGSERIAL PRIMARY KEY,
     nome VARCHAR(200) NOT NULL,
     descricao TEXT,
     tipo_evento VARCHAR(50) NOT NULL,
-    duracao_minutos INT NOT NULL,
+    duracao_minutos INTEGER NOT NULL,
     imagem_url VARCHAR(255),
-    ativo BOOLEAN NOT NULL DEFAULT TRUE
+    ativo BOOLEAN DEFAULT true
 );
 
+-- Tabela de sessões
 CREATE TABLE sessao (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    id BIGSERIAL PRIMARY KEY,
     evento_id BIGINT NOT NULL,
     data_hora TIMESTAMP NOT NULL,
-    preco DOUBLE NOT NULL,
-    capacidade INT NOT NULL,
+    preco DECIMAL(10,2) NOT NULL,
+    capacidade INTEGER NOT NULL,
     guia_id BIGINT,
-    ativo BOOLEAN NOT NULL DEFAULT TRUE,
+    ativo BOOLEAN DEFAULT true,
     FOREIGN KEY (evento_id) REFERENCES evento(id),
     FOREIGN KEY (guia_id) REFERENCES usuario(id)
 );
 
+-- Tabela de pagamentos
 CREATE TABLE pagamento (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    id BIGSERIAL PRIMARY KEY,
     valor_total DECIMAL(10,2) NOT NULL,
-    quantidade_ingressos INT NOT NULL,
+    quantidade_ingressos INTEGER NOT NULL,
     comissao_vendedor DECIMAL(10,2),
     valor_liquido DECIMAL(10,2),
-    data_pagamento TIMESTAMP NOT NULL,
+    data_pagamento TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status VARCHAR(50) NOT NULL,
     metodo_pagamento VARCHAR(50),
     codigo_transacao VARCHAR(100)
 );
 
+-- Tabela de ingressos
 CREATE TABLE ingresso (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    id BIGSERIAL PRIMARY KEY,
     sessao_id BIGINT NOT NULL,
-    numero_ingresso INT NOT NULL,
+    numero_ingresso INTEGER NOT NULL,
     comprador_id BIGINT NOT NULL,
     vendedor_id BIGINT,
     pagamento_id BIGINT NOT NULL,
-    qr_code VARCHAR(255) NOT NULL UNIQUE,
+    qr_code VARCHAR(255) UNIQUE NOT NULL,
     status VARCHAR(50) NOT NULL,
     data_checkin TIMESTAMP,
     FOREIGN KEY (sessao_id) REFERENCES sessao(id),
