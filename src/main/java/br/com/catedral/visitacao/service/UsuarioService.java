@@ -1,5 +1,6 @@
 package br.com.catedral.visitacao.service;
 
+import br.com.catedral.visitacao.enums.Perfil;
 import br.com.catedral.visitacao.model.Usuario;
 import br.com.catedral.visitacao.repository.UsuarioRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -48,6 +49,17 @@ public class UsuarioService implements UserDetailsService {
 
     public Usuario atualizarPerfis(Long usuarioId, List<String> perfis) {
         Usuario usuario = buscarPorId(usuarioId);
+        usuario.getPerfis().clear();
+
+        for (String perfilStr : perfis) {
+            try {
+                Perfil perfil = Perfil.valueOf(perfilStr.toUpperCase());
+                usuario.getPerfis().add(perfil);
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Perfil inválido: " + perfilStr);
+            }
+        }
+
         return usuarioRepository.save(usuario);
     }
 
