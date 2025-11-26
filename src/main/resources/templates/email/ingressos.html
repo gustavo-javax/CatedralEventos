@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Seus Ingressos - Catedral</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: #2c3e50; color: white; padding: 20px; text-align: center; }
+        .ingresso { border: 2px solid #3498db; margin: 20px 0; padding: 15px; border-radius: 8px; }
+        .qr-code { text-align: center; margin: 15px 0; }
+        .footer { margin-top: 30px; padding: 20px; background: #ecf0f1; text-align: center; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🎫 Seus Ingressos</h1>
+        <h2 th:text="${sessao.evento.nome}">Nome do Evento</h2>
+    </div>
+
+    <p>Olá <strong th:text="${comprador.nome}">Nome</strong>,</p>
+    <p>Sua compra foi realizada com sucesso! Aqui estão seus ingressos:</p>
+
+    <div th:each="ingresso : ${ingressos}" class="ingresso">
+        <h3>🎫 Ingresso <span th:text="${ingresso.numeroIngresso}">1</span>/<span th:text="${ingressos.size()}">3</span></h3>
+
+        <div class="qr-code">
+            <img th:src="'data:image/png;base64,' + ${'qrCode_' + ingresso.id}"
+                 alt="QR Code" width="200" height="200">
+            <p><strong>Código:</strong> <span th:text="${ingresso.qrCode}">QR_CODE</span></p>
+        </div>
+
+        <p><strong>Evento:</strong> <span th:text="${sessao.evento.nome}">Evento</span></p>
+        <p><strong>Data:</strong> <span th:text="${#temporals.format(sessao.dataHora, 'dd/MM/yyyy')}">Data</span></p>
+        <p><strong>Horário:</strong> <span th:text="${#temporals.format(sessao.dataHora, 'HH:mm')}">Horário</span></p>
+        <p><strong>Local:</strong> Catedral</p>
+    </div>
+
+    <div class="instructions">
+        <h3>📋 Instruções Importantes:</h3>
+        <ul>
+            <li> Cada pessoa deve levar <strong>UM ingresso</strong></li>
+            <li> Chegue com <strong>15 minutos de antecedência</strong></li>
+            <li> Mostre o <strong>QR Code na entrada</strong></li>
+            <li> Ingresso válido apenas para a sessão adquirida</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        <p>Agradecemos pela preferência! 🏛️</p>
+        <p><strong>Catedral</strong></p>
+        <p>Em caso de dúvidas, entre em contato conosco.</p>
+    </div>
+</div>
+</body>
+</html>

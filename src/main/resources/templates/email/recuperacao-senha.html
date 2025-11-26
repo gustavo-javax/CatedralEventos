@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recuperação de Senha</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: #e74c3c; color: white; padding: 20px; text-align: center; }
+        .token { background: #f8f9fa; padding: 15px; margin: 20px 0; text-align: center; font-size: 24px; font-weight: bold; }
+        .footer { margin-top: 30px; padding: 20px; background: #ecf0f1; text-align: center; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Recuperação de Senha</h1>
+    </div>
+
+    <p>Olá,</p>
+    <p>Recebemos uma solicitação para redefinir sua senha. Use o token abaixo para prosseguir:</p>
+
+    <div class="token" th:text="${token}">TOKEN_AQUI</div>
+
+    <p>Este token é válido por 1 hora. Se você não solicitou esta redefinição, ignore este email.</p>
+
+    <div class="footer">
+        <p><strong>Catedral</strong></p>
+        <p>Segurança em primeiro lugar! </p>
+    </div>
+</div>
+</body>
+</html>

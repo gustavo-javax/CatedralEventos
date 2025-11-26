@@ -116,4 +116,8 @@ public class IngressoService {
         ingressoRepository.save(ingresso);
     }
 
+    public Ingresso salvar(Ingresso ingresso) {
+        return ingressoRepository.save(ingresso);
+    }
+
 }
